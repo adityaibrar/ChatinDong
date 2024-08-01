@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "940575374179",
+    "project_id": "chatindong-73d39",
+    "storage_bucket": "chatindong-73d39.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:940575374179:android:c3dff07fc884dad04e3156",
+        "android_client_info": {
+          "package_name": "com.example.chatin_dong"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBGdfvdgGV6LkQ4UUys-epTimqMJLoX6U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
