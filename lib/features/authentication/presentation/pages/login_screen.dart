@@ -1,5 +1,7 @@
-import 'package:chatin_dong/features/authentication/presentation/bloc/authentication_bloc.dart';
-import 'package:chatin_dong/features/authentication/presentation/pages/register_pages.dart';
+import 'dart:developer';
+
+import '../bloc/authentication_bloc.dart';
+import 'register_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -7,7 +9,7 @@ class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
@@ -47,6 +49,8 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
+                  log(_emailController.text);
+                  log(_passwordController.text);
                   context.read<AuthenticationBloc>().add(Login(
                         email: _emailController.text,
                         password: _passwordController.text,

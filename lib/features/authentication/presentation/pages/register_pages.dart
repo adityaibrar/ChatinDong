@@ -1,4 +1,4 @@
-import 'package:chatin_dong/features/authentication/presentation/bloc/authentication_bloc.dart';
+import '../bloc/authentication_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -6,7 +6,7 @@ class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
   @override
-  _RegisterScreenState createState() => _RegisterScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
@@ -18,13 +18,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Register'),
+        title: const Text('Register'),
       ),
       body: BlocListener<AuthenticationBloc, AuthenticationState>(
         listener: (context, state) {
           if (state is Authenticated) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Registration Successful!')),
+              const SnackBar(content: Text('Registration Successful!')),
             );
             Navigator.pushReplacementNamed(context, '/chat');
           } else if (state is AuthError) {
@@ -39,27 +39,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
             children: [
               TextField(
                 controller: _nameController,
-                decoration: InputDecoration(labelText: 'Name'),
+                decoration: const InputDecoration(labelText: 'Name'),
               ),
               TextField(
                 controller: _emailController,
-                decoration: InputDecoration(labelText: 'Email'),
+                decoration: const InputDecoration(labelText: 'Email'),
               ),
               TextField(
                 controller: _passwordController,
-                decoration: InputDecoration(labelText: 'Password'),
+                decoration: const InputDecoration(labelText: 'Password'),
                 obscureText: true,
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
                   context.read<AuthenticationBloc>().add(Register(
-                    name: _nameController.text,
-                    email: _emailController.text,
-                    password: _passwordController.text,
-                  ));
+                        name: _nameController.text,
+                        email: _emailController.text,
+                        password: _passwordController.text,
+                      ));
                 },
-                child: Text('Register'),
+                child: const Text('Register'),
               ),
             ],
           ),

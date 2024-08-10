@@ -1,4 +1,4 @@
-import 'package:chatin_dong/features/authentication/domain/entities/user_authentication.dart';
+import '../../domain/entities/user_authentication.dart';
 
 class UserModel extends User {
   const UserModel({

@@ -1,14 +1,12 @@
-import 'package:chatin_dong/features/authentication/data/datasources/authentication_data_source.dart';
-import 'package:chatin_dong/features/authentication/data/repositories/auth_repository.dart';
-import 'package:chatin_dong/features/authentication/domain/usecases/auth_login.dart';
-import 'package:chatin_dong/features/authentication/domain/usecases/auth_register.dart';
-import 'package:chatin_dong/features/authentication/domain/usecases/auth_signout.dart';
-import 'package:chatin_dong/features/authentication/presentation/bloc/authentication_bloc.dart';
-import 'package:chatin_dong/features/authentication/presentation/pages/login_screen.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../core/injection.dart';
+import '../../domain/usecases/auth_login.dart';
+import '../../domain/usecases/auth_register.dart';
+import '../../domain/usecases/auth_signout.dart';
+import '../bloc/authentication_bloc.dart';
+import 'login_screen.dart';
 
 class AuthScreen extends StatelessWidget {
   const AuthScreen({super.key});
@@ -17,9 +15,9 @@ class AuthScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => AuthenticationBloc(
-        authlogin: AuthLogin(AuthRepositoryImpl(FirebaseAuthDataSource(FirebaseAuth.instance, FirebaseFirestore.instance))),
-        authregister: AuthRegister(AuthRepositoryImpl(FirebaseAuthDataSource(FirebaseAuth.instance, FirebaseFirestore.instance))),
-        logout: AuthSignOut(AuthRepositoryImpl(FirebaseAuthDataSource(FirebaseAuth.instance, FirebaseFirestore.instance))),
+        authlogin: locator<AuthLogin>(),
+        authregister: locator<AuthRegister>(),
+        logout: locator<AuthSignOut>(),
       ),
       child: BlocListener<AuthenticationBloc, AuthenticationState>(
         listener: (context, state) {
@@ -30,15 +28,21 @@ class AuthScreen extends StatelessWidget {
             Navigator.pushReplacementNamed(context, '/chat');
           } else if (state is AuthError) {
             ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text(state.e)));
+                .showSnackBar(SnackBar(content: Text(state.e.toString())));
           }
         },
         child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
           builder: (context, state) {
-            if (state is AuthenticationInitial || state is Unauthenticated) {
+            if (state is AuthenticationInitial ||
+                state is Unauthenticated ||
+                state is AuthError) {
               return const LoginScreen();
             } else if (state is AuthenticationLoading) {
-              return const Center(child: CircularProgressIndicator());
+              return const Scaffold(
+                body: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
             }
             return Container();
           },

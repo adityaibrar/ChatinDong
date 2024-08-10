@@ -1,6 +1,6 @@
-import 'package:chatin_dong/features/authentication/data/datasources/authentication_data_source.dart';
-import 'package:chatin_dong/features/authentication/domain/entities/user_authentication.dart';
-import 'package:chatin_dong/features/authentication/domain/repositories/authentication_repository.dart';
+import '../datasources/authentication_data_source.dart';
+import '../../domain/entities/user_authentication.dart';
+import '../../domain/repositories/authentication_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final FirebaseAuthDataSource firebaseAuthDataSource;
