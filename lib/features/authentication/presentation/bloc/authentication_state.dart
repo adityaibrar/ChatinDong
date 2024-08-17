@@ -22,6 +22,14 @@ class Authenticated extends AuthenticationState {
   List<Object> get props => [user];
 }
 
+class SuccesRegister extends AuthenticationState {
+  final User user;
+  const SuccesRegister(this.user);
+
+  @override
+  List<Object> get props => [user];
+}
+
 class AuthError extends AuthenticationState {
   final String e;
 

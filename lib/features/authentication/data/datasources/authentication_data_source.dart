@@ -73,8 +73,7 @@ class FirebaseAuthDataSource {
         throw Exception(
             'Pengguna tidak ditemukan, Silahkan registrasi terlebih dahulu');
       } else {
-        print(e.message);
-        throw Exception('Terjadi Kesalahan angjay${e.message}');
+        throw Exception('Terjadi Kesalahan: ${e.message}');
       }
     }
   }

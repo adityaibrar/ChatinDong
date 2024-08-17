@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'core/injection.dart';
+import 'core/routes.dart';
+import 'core/theme.dart';
+import 'features/authentication/domain/usecases/auth_get_user.dart';
 import 'features/authentication/domain/usecases/auth_login.dart';
 import 'features/authentication/domain/usecases/auth_register.dart';
 import 'features/authentication/domain/usecases/auth_signout.dart';
 import 'features/authentication/presentation/bloc/authentication_bloc.dart';
-import 'features/authentication/presentation/pages/auth_pages.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -29,18 +31,18 @@ class MyApp extends StatelessWidget {
             authlogin: locator<AuthLogin>(),
             authregister: locator<AuthRegister>(),
             logout: locator<AuthSignOut>(),
+            authGetUser: locator<AuthGetUser>(),
           ),
         ),
       ],
       child: MaterialApp(
-        title: 'Flutter Firebase Auth',
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
+          useMaterial3: true,
         ),
-        home: const AuthScreen(),
-        routes: const {
-          // '/chat': (context) => ChatScreen(),
-        },
+        initialRoute: '/',
+        routes: routes,
       ),
     );
   }

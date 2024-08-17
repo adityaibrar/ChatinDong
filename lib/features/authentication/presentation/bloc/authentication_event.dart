@@ -36,3 +36,5 @@ class Register extends AuthenticationEvent {
 }
 
 class Logout extends AuthenticationEvent {}
+
+class Check extends AuthenticationEvent {}

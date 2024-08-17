@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '../../domain/entities/user_authentication.dart';
 
 class UserModel extends User {
@@ -10,10 +12,13 @@ class UserModel extends User {
 
   factory UserModel.fromJson(Map<String, dynamic> map) {
     return UserModel(
-        uid: map['uid'],
-        name: map['name'],
-        email: map['email'],
-        createdAt: map['createdAt']);
+      uid: map['uid'],
+      name: map['name'],
+      email: map['email'],
+      createdAt: map['createdAt'] is String
+          ? DateTime.parse(map['createdAt'])
+          : (map['createdAt'] as Timestamp).toDate(),
+    );
   }
 
   Map<String, dynamic> toJson() {
@@ -21,7 +26,7 @@ class UserModel extends User {
       'uid': uid,
       'name': name,
       'email': email,
-      'createdAt': createdAt,
+      'createdAt': createdAt.toIso8601String(),
     };
   }
 }
