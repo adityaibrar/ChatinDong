@@ -1,3 +1,4 @@
+import 'package:chatin_dong/features/friends/domain/usecases/search_friends.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -12,6 +13,12 @@ import '../features/authentication/domain/usecases/auth_get_user.dart';
 import '../features/authentication/domain/usecases/auth_login.dart';
 import '../features/authentication/domain/usecases/auth_register.dart';
 import '../features/authentication/domain/usecases/auth_signout.dart';
+import '../features/friends/data/datasources/friend_remote.dart';
+import '../features/friends/data/repositories/friend_repository.dart';
+import '../features/friends/domain/repositories/friend_repository.dart';
+import '../features/friends/domain/usecases/add_friends.dart';
+import '../features/friends/domain/usecases/get_friends.dart';
+import '../features/friends/domain/usecases/search_people.dart';
 
 final GetIt locator = GetIt.instance;
 
@@ -28,14 +35,21 @@ Future<void> setUpInjection() async {
   locator.registerLazySingleton(
       () => FirebaseAuthDataSource(locator(), locator()));
   locator.registerLazySingleton(() => UserLocalDataSources(locator()));
+  locator.registerLazySingleton(() => FriendRemoteDataSources(locator()));
 
   //Implementations
   locator.registerLazySingleton<AuthRepository>(
       () => AuthRepositoryImpl(locator(), locator()));
+  locator.registerLazySingleton<FriendRepository>(
+      () => FriendRepositoryImpl(locator()));
 
   //UseCases
   locator.registerLazySingleton(() => AuthLogin(locator()));
   locator.registerLazySingleton(() => AuthRegister(locator()));
   locator.registerLazySingleton(() => AuthSignOut(locator()));
   locator.registerLazySingleton(() => AuthGetUser(locator()));
+  locator.registerLazySingleton(() => SearchPeople(locator()));
+  locator.registerLazySingleton(() => AddFriends(locator()));
+  locator.registerLazySingleton(() => GetFriends(locator()));
+  locator.registerLazySingleton(() => SearchFriends(locator()));
 }
