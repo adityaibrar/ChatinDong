@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:chatin_dong/features/dashboard/presentation/pages/dashboard_page.dart';
+import '../../../dashboard/presentation/pages/dashboard_page.dart';
 
 import '../widgets/custom_texfield.dart';
 import 'package:flutter_svg/flutter_svg.dart';
