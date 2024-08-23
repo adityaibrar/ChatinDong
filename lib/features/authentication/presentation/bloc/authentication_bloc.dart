@@ -1,13 +1,13 @@
 import 'dart:developer';
 
-import '../../domain/usecases/auth_get_user.dart';
+import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../domain/entities/user_authentication.dart';
+import '../../domain/usecases/auth_get_user.dart';
 import '../../domain/usecases/auth_login.dart';
 import '../../domain/usecases/auth_register.dart';
 import '../../domain/usecases/auth_signout.dart';
-import 'package:equatable/equatable.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'authentication_event.dart';
 part 'authentication_state.dart';
