@@ -1,4 +1,3 @@
-import 'package:chatin_dong/features/friends/domain/usecases/search_friends.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,13 +10,17 @@ import 'features/authentication/domain/usecases/auth_login.dart';
 import 'features/authentication/domain/usecases/auth_register.dart';
 import 'features/authentication/domain/usecases/auth_signout.dart';
 import 'features/authentication/presentation/bloc/authentication_bloc.dart';
+import 'features/chat/domain/usecases/get_message.dart';
+import 'features/chat/domain/usecases/send_message.dart';
+import 'features/chat/presentation/bloc/chat_bloc.dart';
 import 'features/dashboard/presentation/bloc/dashboard_bloc.dart';
 import 'features/friends/domain/usecases/add_friends.dart';
 import 'features/friends/domain/usecases/get_friends.dart';
+import 'features/friends/domain/usecases/search_friends.dart';
 import 'features/friends/domain/usecases/search_people.dart';
 import 'features/friends/presentation/bloc/friends_bloc.dart';
 import 'firebase_options.dart';
-    
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -48,6 +51,12 @@ class MyApp extends StatelessWidget {
             searchPeople: locator<SearchPeople>(),
             getFriends: locator<GetFriends>(),
             searchFriends: locator<SearchFriends>(),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => ChatBloc(
+            sendMessage: locator<SendMessage>(),
+            getMessage: locator<GetMessage>(),
           ),
         )
       ],

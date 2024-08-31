@@ -1,4 +1,10 @@
-import 'package:chatin_dong/features/friends/domain/usecases/search_friends.dart';
+import 'package:chatin_dong/features/chat/data/datasources/chat_remote_data_source.dart';
+import 'package:chatin_dong/features/chat/data/repositories/chat_repository_impl.dart';
+import 'package:chatin_dong/features/chat/domain/repositories/chat_repository.dart';
+import 'package:chatin_dong/features/chat/domain/usecases/get_message.dart';
+import 'package:chatin_dong/features/chat/domain/usecases/send_message.dart';
+
+import '../features/friends/domain/usecases/search_friends.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -36,12 +42,15 @@ Future<void> setUpInjection() async {
       () => FirebaseAuthDataSource(locator(), locator()));
   locator.registerLazySingleton(() => UserLocalDataSources(locator()));
   locator.registerLazySingleton(() => FriendRemoteDataSources(locator()));
+  locator.registerLazySingleton(() => ChatRemoteDataSource(locator()));
 
   //Implementations
   locator.registerLazySingleton<AuthRepository>(
       () => AuthRepositoryImpl(locator(), locator()));
   locator.registerLazySingleton<FriendRepository>(
       () => FriendRepositoryImpl(locator()));
+  locator.registerLazySingleton<ChatRepository>(
+      () => ChatRepositoryImpl(locator()));
 
   //UseCases
   locator.registerLazySingleton(() => AuthLogin(locator()));
@@ -52,4 +61,6 @@ Future<void> setUpInjection() async {
   locator.registerLazySingleton(() => AddFriends(locator()));
   locator.registerLazySingleton(() => GetFriends(locator()));
   locator.registerLazySingleton(() => SearchFriends(locator()));
+  locator.registerLazySingleton(() => GetMessage(locator()));
+  locator.registerLazySingleton(() => SendMessage(locator()));
 }
