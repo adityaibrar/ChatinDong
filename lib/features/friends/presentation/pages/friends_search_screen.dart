@@ -1,8 +1,8 @@
-import 'package:chatin_dong/features/authentication/presentation/widgets/custom_texfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/theme.dart';
+import '../../../authentication/presentation/widgets/custom_texfield.dart';
 import '../bloc/friends_bloc.dart';
 
 class SearchFriendsPage extends StatefulWidget {

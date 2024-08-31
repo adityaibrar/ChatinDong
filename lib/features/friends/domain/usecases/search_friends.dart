@@ -1,5 +1,5 @@
-import 'package:chatin_dong/features/friends/domain/entities/friend_entity.dart';
-import 'package:chatin_dong/features/friends/domain/repositories/friend_repository.dart';
+import '../entities/friend_entity.dart';
+import '../repositories/friend_repository.dart';
 
 class SearchFriends {
   final FriendRepository friendRepository;

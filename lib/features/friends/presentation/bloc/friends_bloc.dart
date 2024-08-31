@@ -1,4 +1,4 @@
-import 'package:chatin_dong/features/friends/domain/usecases/search_friends.dart';
+import '../../domain/usecases/search_friends.dart';
 
 import '../../../authentication/domain/usecases/auth_get_user.dart';
 import '../../domain/usecases/get_friends.dart';
