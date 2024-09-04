@@ -21,6 +21,14 @@ class Authenticated extends AuthenticationState {
   @override
   List<Object> get props => [user];
 }
+class ProfileNotSetUp extends AuthenticationState {
+  final User user;
+
+  const ProfileNotSetUp(this.user);
+
+  @override
+  List<Object> get props => [user];
+}
 
 class SuccesRegister extends AuthenticationState {
   final User user;
@@ -37,4 +45,13 @@ class AuthError extends AuthenticationState {
 
   @override
   List<Object> get props => [e];
+}
+
+class SuccessSetUp extends AuthenticationState {
+  // final UserSetProfile userSetProfile;
+
+  // const SuccessSetUp(this.userSetProfile);
+
+  // @override
+  // List<Object> get props => [userSetProfile];
 }

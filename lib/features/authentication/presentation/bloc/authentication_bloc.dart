@@ -1,12 +1,12 @@
-import 'dart:developer';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../data/datasources/user_local_storage_data_sources.dart';
 import '../../domain/entities/user_authentication.dart';
 import '../../domain/usecases/auth_get_user.dart';
 import '../../domain/usecases/auth_login.dart';
 import '../../domain/usecases/auth_register.dart';
+import '../../domain/usecases/auth_set_profile.dart';
 import '../../domain/usecases/auth_signout.dart';
 
 part 'authentication_event.dart';
@@ -18,12 +18,16 @@ class AuthenticationBloc
   final AuthRegister authregister;
   final AuthSignOut logout;
   final AuthGetUser authGetUser;
+  final AuthSetProfile authSetUpProfile;
+  final UserLocalDataSources userLocalDataSources;
 
   AuthenticationBloc({
     required this.authlogin,
     required this.authregister,
     required this.logout,
     required this.authGetUser,
+    required this.authSetUpProfile,
+    required this.userLocalDataSources,
   }) : super(AuthenticationInitial()) {
     on<AuthenticationEvent>((event, emit) async {
       if (event is Login) {
@@ -33,7 +37,7 @@ class AuthenticationBloc
             event.email,
             event.password,
           );
-          emit(Authenticated(user));
+          emit(ProfileNotSetUp(user));
         } catch (e) {
           emit(AuthError(e.toString()));
         }
@@ -58,15 +62,31 @@ class AuthenticationBloc
         emit(Unauthenticated());
       }
       if (event is Check) {
-        log('Check event triggered');
         emit(AuthenticationLoading());
         try {
           final user = await authGetUser.execute();
-          log('User authenticated: ${user.email}');
-          emit(Authenticated(user));
+          final isSetUp = await userLocalDataSources.isProfileSetUp();
+          if (isSetUp) {
+            emit(Authenticated(user));
+          } else {
+            emit(ProfileNotSetUp(user));
+          }
         } catch (e) {
-          log('User unauthenticated or error: $e');
           emit(Unauthenticated());
+        }
+      }
+      if (event is SetUpProfileEvent) {
+        emit(AuthenticationLoading());
+        try {
+          final user = await authGetUser.execute();
+          await authSetUpProfile.execute(
+              user: user,
+              currentId: user.uid,
+              userName: event.userName,
+              imageUrl: event.imageUrl);
+          emit(SuccessSetUp());
+        } catch (e) {
+          emit(AuthError(e.toString()));
         }
       }
     });

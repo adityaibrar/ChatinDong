@@ -27,11 +27,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
       body: BlocListener<AuthenticationBloc, AuthenticationState>(
         listener: (context, state) {
-          if (state is Authenticated) {
+          if (state is SuccesRegister) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Registration Successful!')),
             );
-            Navigator.pushReplacementNamed(context, '/chat');
+            Navigator.pushReplacementNamed(context, LoginScreen.routeName);
           } else if (state is AuthError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.e)),

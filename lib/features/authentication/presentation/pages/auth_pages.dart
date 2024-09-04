@@ -1,3 +1,5 @@
+import 'package:chatin_dong/features/authentication/presentation/pages/set_up_profile_screen.dart';
+
 import '../../../../core/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,7 +33,9 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return BlocListener<AuthenticationBloc, AuthenticationState>(
       listener: (context, state) {
-        if (state is Authenticated) {
+        if (state is ProfileNotSetUp) {
+          Navigator.pushReplacementNamed(context, SetUpProfileScreen.routeName);
+        } else if (state is Authenticated) {
           Navigator.pushReplacementNamed(context, DashboardPage.routeName);
         } else if (state is Unauthenticated) {
           Navigator.pushReplacementNamed(context, LoginScreen.routeName);

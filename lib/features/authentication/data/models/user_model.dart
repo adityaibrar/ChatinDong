@@ -7,6 +7,7 @@ class UserModel extends User {
     required super.uid,
     required super.name,
     required super.email,
+    super.imageUrl,
     required super.createdAt,
   });
 
@@ -15,6 +16,7 @@ class UserModel extends User {
       uid: map['uid'],
       name: map['name'],
       email: map['email'],
+      imageUrl: map['image_profile'],
       createdAt: map['createdAt'] is String
           ? DateTime.parse(map['createdAt'])
           : (map['createdAt'] as Timestamp).toDate(),
@@ -26,6 +28,7 @@ class UserModel extends User {
       'uid': uid,
       'name': name,
       'email': email,
+      'image_profile': imageUrl,
       'createdAt': createdAt.toIso8601String(),
     };
   }

@@ -1,3 +1,5 @@
+import 'package:chatin_dong/features/authentication/presentation/pages/set_up_profile_screen.dart';
+
 import '../features/authentication/presentation/pages/auth_pages.dart';
 import '../features/authentication/presentation/pages/login_screen.dart';
 import '../features/authentication/presentation/pages/register_pages.dart';
@@ -12,4 +14,5 @@ dynamic routes = {
   DashboardPage.routeName: (context) => const DashboardPage(),
   SearchFriendsPage.routeName: (context) => const SearchFriendsPage(),
   ChatScreen.routeName: (context) => const ChatScreen(),
+  SetUpProfileScreen.routeName: (context) => const SetUpProfileScreen(),
 };

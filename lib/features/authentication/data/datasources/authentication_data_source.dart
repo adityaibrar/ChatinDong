@@ -1,8 +1,7 @@
-import 'dart:developer';
-
-import '../models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import '../models/user_model.dart';
 
 class FirebaseAuthDataSource {
   final FirebaseAuth _firebaseAuth;
@@ -60,7 +59,6 @@ class FirebaseAuthDataSource {
       if (!doc.exists) {
         throw ('Pengguna tidak ditemukan, Silahkan registrasi terlebih dahulu!');
       }
-      log(doc.data().toString());
       final data = doc.data() as Map<String, dynamic>?;
       if (data == null) {
         throw ('Pengguna tidak ditemukan');
@@ -80,5 +78,33 @@ class FirebaseAuthDataSource {
 
   Future<void> authSignOut() async {
     await _firebaseAuth.signOut();
+  }
+
+  Future<UserModel> setUpProfile({
+    required UserModel user,
+    required String currentId,
+    required String imageUrl,
+    required String userName,
+  }) async {
+    try {
+      final UserModel userSetup = UserModel(
+        uid: user.uid,
+        name: userName,
+        email: user.email,
+        imageUrl: imageUrl.isEmpty ? user.imageUrl : imageUrl,
+        createdAt: user.createdAt,
+      );
+
+      final dataToSave = userSetup.toJson();
+
+      await _firestore
+          .collection('users')
+          .doc(currentId)
+          .set(dataToSave, SetOptions(merge: true));
+
+      return userSetup;
+    } catch (e) {
+      throw Exception('Terjadi Kesalahan saat update profile: $e');
+    }
   }
 }
