@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/theme.dart';
-import '../../../../utils/chat_util.dart';
+import '../../../../core/utils/chat_util.dart';
 import '../../../authentication/presentation/bloc/authentication_bloc.dart';
 import '../../../authentication/presentation/widgets/custom_texfield.dart';
 import '../../../chat/presentation/pages/chat_screen.dart';
