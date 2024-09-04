@@ -35,6 +35,19 @@ class Register extends AuthenticationEvent {
   List<Object> get props => [name, email, password];
 }
 
+class SetUpProfileEvent extends AuthenticationEvent {
+  final String imageUrl;
+  final String userName;
+
+  const SetUpProfileEvent({
+    required this.imageUrl,
+    required this.userName,
+  });
+
+  @override
+  List<Object> get props => [ imageUrl, userName];
+}
+
 class Logout extends AuthenticationEvent {}
 
 class Check extends AuthenticationEvent {}

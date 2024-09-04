@@ -1,6 +1,4 @@
-import 'dart:developer';
-
-import '../../../dashboard/presentation/pages/dashboard_page.dart';
+import 'package:chatin_dong/features/authentication/presentation/pages/set_up_profile_screen.dart';
 
 import '../widgets/custom_texfield.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -31,15 +29,15 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: BlocListener<AuthenticationBloc, AuthenticationState>(
         listener: (context, state) {
-          if (state is Authenticated) {
-            Navigator.pushReplacementNamed(context, DashboardPage.routeName);
+          if (state is ProfileNotSetUp) {
+            Navigator.pushReplacementNamed(
+                context, SetUpProfileScreen.routeName);
             ScaffoldMessenger.of(context)
                 .showSnackBar(const SnackBar(content: Text('Berhasil Login')));
           }
           if (state is AuthError) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text(state.e)));
-            log(state.e);
           }
         },
         child: SingleChildScrollView(
@@ -156,8 +154,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       backgroundColor: primaryColor,
                       titleColor: whiteColor,
                       onPressed: () {
-                        log(_emailController.text);
-                        log(_passwordController.text);
                         context.read<AuthenticationBloc>().add(
                               Login(
                                 email: _emailController.text,

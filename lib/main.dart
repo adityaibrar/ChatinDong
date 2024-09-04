@@ -5,9 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'core/injection.dart';
 import 'core/routes.dart';
 import 'core/theme.dart';
+import 'features/authentication/data/datasources/user_local_storage_data_sources.dart';
 import 'features/authentication/domain/usecases/auth_get_user.dart';
 import 'features/authentication/domain/usecases/auth_login.dart';
 import 'features/authentication/domain/usecases/auth_register.dart';
+import 'features/authentication/domain/usecases/auth_set_profile.dart';
 import 'features/authentication/domain/usecases/auth_signout.dart';
 import 'features/authentication/presentation/bloc/authentication_bloc.dart';
 import 'features/chat/domain/usecases/get_message.dart';
@@ -42,6 +44,8 @@ class MyApp extends StatelessWidget {
             authregister: locator<AuthRegister>(),
             logout: locator<AuthSignOut>(),
             authGetUser: locator<AuthGetUser>(),
+            authSetUpProfile: locator<AuthSetProfile>(),
+            userLocalDataSources: locator<UserLocalDataSources>(),
           ),
         ),
         BlocProvider(

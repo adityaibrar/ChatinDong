@@ -1,8 +1,8 @@
-import '../datasources/user_local_storage_data_sources.dart';
-
-import '../datasources/authentication_data_source.dart';
 import '../../domain/entities/user_authentication.dart';
 import '../../domain/repositories/authentication_repository.dart';
+import '../datasources/authentication_data_source.dart';
+import '../datasources/user_local_storage_data_sources.dart';
+import '../models/user_model.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final FirebaseAuthDataSource firebaseAuthDataSource;
@@ -45,6 +45,7 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<void> authSignOut() async {
     await firebaseAuthDataSource.authSignOut();
     await userLocalDataSources.clearUser();
+    await userLocalDataSources.clearIsSetUp();
   }
 
   @override
@@ -54,5 +55,34 @@ class AuthRepositoryImpl implements AuthRepository {
       throw Exception('User not found');
     }
     return user;
+  }
+
+  @override
+  Future<User> authSetProfile({
+    required User user,
+    required String currentId,
+    required String imageUrl,
+    required String userName,
+  }) async {
+    try {
+      final UserModel userModel = UserModel(
+        uid: user.uid,
+        name: userName,
+        email: user.email,
+        imageUrl: imageUrl,
+        createdAt: user.createdAt,
+      );
+      final userUpdateModel = await firebaseAuthDataSource.setUpProfile(
+        user: userModel,
+        currentId: currentId,
+        imageUrl: imageUrl,
+        userName: userName,
+      );
+      await userLocalDataSources.saveUser(user: userUpdateModel);
+      await userLocalDataSources.saveSetUpStatus(isSetUp: true);
+      return userUpdateModel;
+    } catch (e) {
+      throw Exception('Terjadi Kesalahan saat update profile: $e');
+    }
   }
 }
