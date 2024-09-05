@@ -1,3 +1,4 @@
+import 'package:chatin_dong/core/utils/image_converter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -64,20 +65,32 @@ class ChatScreenState extends State<ChatScreen> {
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     final receiverId = arguments['receiverId'] as String;
     final receiverName = arguments['receiverName'] as String;
+    final imageProfile = arguments['image_profile'] as String;
 
     return Scaffold(
       appBar: AppBar(
+        title: Row(
+          children: [
+            CircleAvatar(
+              backgroundImage: base64ToImageProvider(imageProfile),
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Text(
+              receiverName,
+              style: whiteTextStyle.copyWith(
+                fontSize: 18,
+                fontWeight: semiBold,
+              ),
+            ),
+          ],
+        ),
         backgroundColor: primaryColor,
         iconTheme: IconThemeData(
           color: whiteColor,
         ),
-        title: Text(
-          receiverName,
-          style: whiteTextStyle.copyWith(
-            fontSize: 18,
-            fontWeight: semiBold,
-          ),
-        ),
+        elevation: 0,
       ),
       body: BlocListener<AuthenticationBloc, AuthenticationState>(
         listener: (context, state) {

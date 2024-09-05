@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/theme.dart';
+import '../../../../core/utils/image_converter.dart';
 import '../../../authentication/presentation/widgets/custom_texfield.dart';
 import '../bloc/friends_bloc.dart';
 
@@ -70,6 +71,10 @@ class _SearchFriendsPageState extends State<SearchFriendsPage> {
                         itemBuilder: (context, index) {
                           final friend = state.friends[index];
                           return ListTile(
+                            leading: CircleAvatar(
+                              backgroundImage:
+                                  base64ToImageProvider(friend.imageUrl),
+                            ),
                             title: Text(friend.userName),
                             subtitle: Text(friend.email),
                             trailing: IconButton(
