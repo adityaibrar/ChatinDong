@@ -28,6 +28,10 @@ class ChatModel extends Chat {
       'senderId': senderId,
       'receiverId': receiverId,
       'timestamp': Timestamp.fromDate(timestamp),
+      'users': <String>[
+        senderId,
+        receiverId,
+      ]
     };
   }
 }

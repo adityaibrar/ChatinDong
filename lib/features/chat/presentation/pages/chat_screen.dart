@@ -27,6 +27,10 @@ class ChatScreenState extends State<ChatScreen> {
     super.initState();
     _messageController = TextEditingController();
     _scrollController = ScrollController();
+
+    _messageController.addListener(() {
+      setState(() {});
+    });
   }
 
   void _scrollToBottom() {
@@ -92,18 +96,12 @@ class ChatScreenState extends State<ChatScreen> {
                     WidgetsBinding.instance.addPostFrameCallback((_) {
                       _scrollToBottom();
                     });
-                    // Dapatkan list pesan
                     final messages = state.messages;
-                    // Mengurutkan pesan dari yang terlama ke yang terbaru jika perlu
-                    // (Jika pesan sudah diurutkan di Firestore, langkah ini mungkin tidak diperlukan)
-                    final sortedMessages = List.from(messages); // Copy list
-                    sortedMessages
-                        .sort((a, b) => a.timestamp.compareTo(b.timestamp));
                     return ListView.builder(
                       controller: _scrollController,
-                      itemCount: sortedMessages.length,
+                      itemCount: messages.length,
                       itemBuilder: (context, index) {
-                        final message = sortedMessages[index];
+                        final message = messages[index];
                         final isSentByMe = message.senderId == senderId;
 
                         return Align(
@@ -112,35 +110,46 @@ class ChatScreenState extends State<ChatScreen> {
                               : Alignment.centerLeft,
                           child: Container(
                             margin: const EdgeInsets.symmetric(
-                                vertical: 4, horizontal: 8),
+                              vertical: 4,
+                              horizontal: 8,
+                            ),
                             padding: const EdgeInsets.symmetric(
-                                vertical: 8, horizontal: 12),
+                              vertical: 8,
+                              horizontal: 12,
+                            ),
                             decoration: BoxDecoration(
                               color:
-                                  isSentByMe ? Colors.blue : Colors.grey[300],
+                                  isSentByMe ? primaryColor : Colors.grey[300],
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  message.content,
-                                  style: TextStyle(
-                                    color: isSentByMe
-                                        ? Colors.white
-                                        : Colors.black,
+                            child: IntrinsicWidth(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    message.content,
+                                    style: blackTextStyle.copyWith(
+                                      fontSize: 14,
+                                      color: isSentByMe
+                                          ? Colors.white
+                                          : Colors.black,
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  DateFormat('HH:mm').format(
-                                      message.timestamp), // Format timestamp
-                                  style: TextStyle(
-                                    color: isSentByMe
-                                        ? Colors.white
-                                        : Colors.black,
+                                  Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Text(
+                                      DateFormat('HH:mm').format(message
+                                          .timestamp), // Format timestamp
+                                      style: blackTextStyle.copyWith(
+                                        fontSize: 10,
+                                        color: isSentByMe
+                                            ? Colors.white
+                                            : Colors.black,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         );
@@ -161,14 +170,27 @@ class ChatScreenState extends State<ChatScreen> {
                   Expanded(
                     child: TextField(
                       controller: _messageController,
-                      decoration: const InputDecoration(
-                        labelText: 'Ketik pesan...',
-                        border: OutlineInputBorder(),
+                      style: blackTextStyle.copyWith(
+                        fontSize: 14,
+                      ),
+                      decoration: InputDecoration(
+                        hintText: 'Ketik pesan',
+                        hintStyle: whiteTextStyle.copyWith(color: Colors.grey),
+                        border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(16),
+                          ),
+                        ),
                       ),
                     ),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.send),
+                    icon: Icon(
+                      Icons.send,
+                      color: _messageController.text.isEmpty
+                          ? Colors.grey
+                          : primaryColor,
+                    ),
                     onPressed: () {
                       final content = _messageController.text;
                       if (content.isNotEmpty) {
