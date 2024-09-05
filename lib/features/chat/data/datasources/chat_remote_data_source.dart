@@ -25,7 +25,7 @@ class ChatRemoteDataSource {
           .collection('chatRooms')
           .doc(userId)
           .collection(userId)
-          .orderBy('timestamp', descending: true)
+          .orderBy('timestamp')
           .snapshots()
           .map((snapshot) => snapshot.docs
               .map((doc) => ChatModel.fromMap(doc.data()))

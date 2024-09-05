@@ -1,4 +1,4 @@
-import 'dart:developer';
+// import 'dart:developer';
 
 import '../models/friend_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -70,7 +70,7 @@ class FriendRemoteDataSources {
       final friends = result.docs
           .map((doc) => FriendModel.fromDocumentSnapshot(doc))
           .toList();
-      log('Friends list for user $userId: ${friends.map((friend) => friend.toString()).join(', ')}');
+      // log('Friends list for user $userId: ${friends.map((friend) => friend.toString()).join(', ')}');
 
       return friends;
     } catch (e) {

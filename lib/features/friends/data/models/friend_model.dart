@@ -1,14 +1,14 @@
-import '../../domain/entities/friend_entity.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+import '../../domain/entities/friend_entity.dart';
 
 class FriendModel extends Friend {
   const FriendModel({
     required super.uid,
     required String name,
     required super.email,
-  }) : super(
-          userName: name,
-        );
+    required super.imageUrl,
+  }) : super(userName: name);
 
   // Mengambil data dari Firestore document dan mengubahnya menjadi FriendModel
   factory FriendModel.fromDocumentSnapshot(DocumentSnapshot doc) {
@@ -16,6 +16,7 @@ class FriendModel extends Friend {
       uid: doc.id,
       name: doc['name'],
       email: doc['email'],
+      imageUrl: doc['image_profile'],
     );
   }
 
@@ -24,6 +25,7 @@ class FriendModel extends Friend {
     return {
       'name': userName,
       'email': email,
+      'image_profile': imageUrl,
     };
   }
 
@@ -33,6 +35,7 @@ class FriendModel extends Friend {
       uid: friend.uid,
       name: friend.userName,
       email: friend.email,
+      imageUrl: friend.imageUrl,
     );
   }
 
@@ -42,6 +45,7 @@ class FriendModel extends Friend {
       uid: uid,
       userName: userName,
       email: email,
+      imageUrl: imageUrl,
     );
   }
 }

@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/theme.dart';
 import '../../../../core/utils/chat_util.dart';
+import '../../../../core/utils/image_converter.dart';
 import '../../../authentication/presentation/bloc/authentication_bloc.dart';
 import '../../../authentication/presentation/widgets/custom_texfield.dart';
 import '../../../chat/presentation/pages/chat_screen.dart';
@@ -94,9 +95,9 @@ class FriendsUserScreenState extends State<FriendsUserScreen> {
                         itemBuilder: (context, index) {
                           final friend = friends[index];
                           return ListTile(
-                            leading: Icon(
-                              Icons.person,
-                              color: primaryColor,
+                            leading: CircleAvatar(
+                              backgroundImage:
+                                  base64ToImageProvider(friend.imageUrl),
                             ),
                             title: Text(
                               friend.userName,
@@ -125,6 +126,7 @@ class FriendsUserScreenState extends State<FriendsUserScreen> {
                                     'receiverId': friend.uid,
                                     'receiverName': friend.userName,
                                     'chatRoomId': roomId,
+                                    'image_profile': friend.imageUrl,
                                   },
                                 );
                               } else {
