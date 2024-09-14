@@ -12,9 +12,12 @@ import 'features/authentication/domain/usecases/auth_register.dart';
 import 'features/authentication/domain/usecases/auth_set_profile.dart';
 import 'features/authentication/domain/usecases/auth_signout.dart';
 import 'features/authentication/presentation/bloc/authentication_bloc.dart';
-import 'features/chat/domain/usecases/get_message.dart';
-import 'features/chat/domain/usecases/send_message.dart';
-import 'features/chat/presentation/bloc/chat_bloc.dart';
+import 'features/chat/domain/usecases/get_message_usecase.dart';
+import 'features/chat/domain/usecases/get_my_chat_usecase.dart';
+import 'features/chat/domain/usecases/seen_message_update_usecase.dart';
+import 'features/chat/domain/usecases/send_message_usecase.dart';
+import 'features/chat/presentation/bloc/chat/chat_bloc.dart';
+import 'features/chat/presentation/bloc/message/message_bloc.dart';
 import 'features/dashboard/presentation/bloc/dashboard_bloc.dart';
 import 'features/friends/domain/usecases/add_friends.dart';
 import 'features/friends/domain/usecases/get_friends.dart';
@@ -59,10 +62,16 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => ChatBloc(
-            sendMessage: locator<SendMessage>(),
-            getMessage: locator<GetMessage>(),
+            getMyChatUsecase: locator<GetMyChatUsecase>(),
           ),
-        )
+        ),
+        BlocProvider(
+          create: (context) => MessageBloc(
+            getMessageUsecase: locator<GetMessageUsecase>(),
+            sendMessageUsecase: locator<SendMessageUsecase>(),
+            seenMessageUpdateUsecase: locator<SeenMessageUpdateUsecase>(),
+          ),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

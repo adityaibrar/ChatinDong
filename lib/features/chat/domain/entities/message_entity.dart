@@ -1,37 +1,45 @@
 import 'package:equatable/equatable.dart';
 
-class ChatEntity extends Equatable {
+class MessageEntity extends Equatable {
   final String? senderUid;
   final String? recipientUid;
   final String? senderName;
   final String? recipientName;
-  final String? recentTextMessage;
+  final String? messageType;
+  final String? message;
   final DateTime? createdAt;
+  final bool? isSeen;
   final String? senderProfile;
   final String? recipientProfile;
-  final num? totalUnreadMessages;
+  final String? messageId;
+  final String? uid;
 
-  const ChatEntity({
+  const MessageEntity({
     this.senderUid,
     this.recipientUid,
     this.senderName,
     this.recipientName,
-    this.recentTextMessage,
+    this.messageType,
+    this.message,
     this.createdAt,
+    this.isSeen,
     this.senderProfile,
     this.recipientProfile,
-    this.totalUnreadMessages,
+    this.messageId,
+    this.uid,
   });
-
   @override
   List<Object?> get props => [
         senderUid,
         recipientUid,
         senderName,
-        recentTextMessage,
+        recipientName,
+        message,
         createdAt,
+        isSeen,
         senderProfile,
         recipientProfile,
-        totalUnreadMessages,
+        messageId,
+        uid,
       ];
 }
