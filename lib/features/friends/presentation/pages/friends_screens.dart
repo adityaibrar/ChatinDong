@@ -1,14 +1,12 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/theme.dart';
-import '../../../../core/utils/chat_util.dart';
 import '../../../../core/utils/image_converter.dart';
 import '../../../authentication/presentation/bloc/authentication_bloc.dart';
 import '../../../authentication/presentation/widgets/custom_texfield.dart';
-import '../../../chat/presentation/pages/chat_screen.dart';
+import '../../../chat/domain/entities/message_entity.dart';
+import '../../../chat/presentation/pages/message_screen.dart';
 import '../bloc/friends_bloc.dart';
 import 'friends_search_screen.dart';
 
@@ -22,6 +20,7 @@ class FriendsUserScreen extends StatefulWidget {
 class FriendsUserScreenState extends State<FriendsUserScreen> {
   final TextEditingController _searchText = TextEditingController();
   String? _userId;
+  String? _senderName;
 
   @override
   void initState() {
@@ -39,6 +38,7 @@ class FriendsUserScreenState extends State<FriendsUserScreen> {
             // Saat user berhasil terautentikasi, simpan userId di state lokal
             setState(() {
               _userId = state.user.uid;
+              _senderName = state.user.name;
             });
           }
         },
@@ -112,26 +112,23 @@ class FriendsUserScreenState extends State<FriendsUserScreen> {
                                   blackTextStyle.copyWith(color: Colors.grey),
                             ),
                             onTap: () {
-                              // Panggil event Check dan navigasikan setelah user id siap
-                              context.read<AuthenticationBloc>().add(Check());
-                              if (_userId != null) {
-                                final roomId = generateChatRoomId(
-                                    _userId.toString(), friend.uid);
-                                log(roomId);
-                                Navigator.pushNamed(
-                                  context,
-                                  ChatScreen
-                                      .routeName, // Ganti dengan route name yang sesuai
-                                  arguments: {
-                                    'receiverId': friend.uid,
-                                    'receiverName': friend.userName,
-                                    'chatRoomId': roomId,
-                                    'image_profile': friend.imageUrl,
-                                  },
-                                );
-                              } else {
-                                log('User ID belum tersedia');
-                              }
+                              // Logika untuk mengarahkan ke halaman MessagePage
+                              final messageEntity = MessageEntity(
+                                senderUid: _userId,
+                                recipientUid: friend.uid,
+                                senderName: _senderName, // Nama pengirim
+                                recipientName: friend.userName,
+                                recipientProfile: friend.imageUrl,
+                              );
+
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MessagePage(
+                                    message: messageEntity,
+                                  ),
+                                ),
+                              );
                             },
                           );
                         },

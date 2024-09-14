@@ -1,33 +1,39 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../domain/entities/chat_entity.dart';
+import '../../domain/entities/message_entity.dart';
 
-class ChatModel extends ChatEntity {
-  const ChatModel({
+class MessageModel extends MessageEntity {
+  const MessageModel({
     super.senderUid,
     super.recipientUid,
     super.senderName,
     super.recipientName,
-    super.recentTextMessage,
+    super.messageType,
+    super.message,
     super.createdAt,
+    super.isSeen,
     super.senderProfile,
     super.recipientProfile,
-    super.totalUnreadMessages,
+    super.messageId,
+    super.uid,
   });
 
-  factory ChatModel.fromFirestore(DocumentSnapshot doc) {
+  factory MessageModel.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
 
-    return ChatModel(
+    return MessageModel(
       senderUid: data['sender_uid'] as String?,
       recipientUid: data['recipient_uid'] as String?,
       senderName: data['sender_name'] as String?,
       recipientName: data['recipient_name'] as String?,
-      recentTextMessage: data['recent_text_message'] as String?,
+      messageType: data['message_type'] as String?,
+      message: data['message'] as String?,
       createdAt: (data['created_at'] as Timestamp).toDate(),
+      isSeen: data['is_seen'] as bool?,
       senderProfile: data['sender_profile'] as String?,
       recipientProfile: data['recipient_profile'] as String?,
-      totalUnreadMessages: data['total_unread_messages'] as num?,
+      messageId: data['message_id'] as String?,
+      uid: data['uid'] as String?,
     );
   }
 
@@ -37,11 +43,14 @@ class ChatModel extends ChatEntity {
       'recipient_uid': recipientUid,
       'sender_name': senderName,
       'recipient_name': recipientName,
-      'recent_text_message': recentTextMessage,
+      'message_type': messageType,
+      'message': message,
       'created_at': Timestamp.fromDate(DateTime.now()),
+      'is_seen': isSeen,
       'sender_profile': senderProfile,
       'recipient_profile': recipientProfile,
-      'total_unread_messages': totalUnreadMessages,
+      'message_id': messageId,
+      'uid': uid,
     };
   }
 }

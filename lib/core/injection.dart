@@ -13,11 +13,13 @@ import '../features/authentication/domain/usecases/auth_login.dart';
 import '../features/authentication/domain/usecases/auth_register.dart';
 import '../features/authentication/domain/usecases/auth_set_profile.dart';
 import '../features/authentication/domain/usecases/auth_signout.dart';
-import '../features/chat/data/datasources/chat_remote_data_source.dart';
+import '../features/chat/data/datasources/chat_data_source.dart';
 import '../features/chat/data/repositories/chat_repository_impl.dart';
 import '../features/chat/domain/repositories/chat_repository.dart';
-import '../features/chat/domain/usecases/get_message.dart';
-import '../features/chat/domain/usecases/send_message.dart';
+import '../features/chat/domain/usecases/get_message_usecase.dart';
+import '../features/chat/domain/usecases/get_my_chat_usecase.dart';
+import '../features/chat/domain/usecases/seen_message_update_usecase.dart';
+import '../features/chat/domain/usecases/send_message_usecase.dart';
 import '../features/friends/data/datasources/friend_remote.dart';
 import '../features/friends/data/repositories/friend_repository.dart';
 import '../features/friends/domain/repositories/friend_repository.dart';
@@ -42,7 +44,7 @@ Future<void> setUpInjection() async {
       () => FirebaseAuthDataSource(locator(), locator()));
   locator.registerLazySingleton(() => UserLocalDataSources(locator()));
   locator.registerLazySingleton(() => FriendRemoteDataSources(locator()));
-  locator.registerLazySingleton(() => ChatRemoteDataSource(locator()));
+  locator.registerLazySingleton(() => ChatDataSource(locator()));
 
   //Implementations
   locator.registerLazySingleton<AuthRepository>(
@@ -62,6 +64,8 @@ Future<void> setUpInjection() async {
   locator.registerLazySingleton(() => AddFriends(locator()));
   locator.registerLazySingleton(() => GetFriends(locator()));
   locator.registerLazySingleton(() => SearchFriends(locator()));
-  locator.registerLazySingleton(() => GetMessage(locator()));
-  locator.registerLazySingleton(() => SendMessage(locator()));
+  locator.registerLazySingleton(() => SendMessageUsecase(locator()));
+  locator.registerLazySingleton(() => SeenMessageUpdateUsecase(locator()));
+  locator.registerLazySingleton(() => GetMessageUsecase(locator()));
+  locator.registerLazySingleton(() => GetMyChatUsecase(locator()));
 }

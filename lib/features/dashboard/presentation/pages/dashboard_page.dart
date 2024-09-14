@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 import '../../../../core/theme.dart';
+import '../../../chat/presentation/pages/chat_screen.dart';
 import '../../../friends/presentation/pages/friends_screens.dart';
 import '../bloc/dashboard_bloc.dart';
 
@@ -17,7 +18,7 @@ class DashboardPage extends StatefulWidget {
 
 class _DashboardPageState extends State<DashboardPage> {
   List<Widget> page = <Widget>[
-    const Text('tab 1'),
+    const ChatListPage(),
     const FriendsUserScreen(),
   ];
 

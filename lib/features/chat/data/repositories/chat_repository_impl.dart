@@ -1,42 +1,45 @@
 import '../../domain/entities/chat_entity.dart';
+import '../../domain/entities/message_entity.dart';
 import '../../domain/repositories/chat_repository.dart';
-import '../datasources/chat_remote_data_source.dart';
-import '../models/chat_model.dart';
+import '../datasources/chat_data_source.dart';
 
 class ChatRepositoryImpl implements ChatRepository {
-  final ChatRemoteDataSource _chatRemoteDataSource;
+  final ChatDataSource _chatDataSource;
 
-  const ChatRepositoryImpl(this._chatRemoteDataSource);
+  const ChatRepositoryImpl(this._chatDataSource);
   @override
-  Stream<List<Chat>> getMessage(String chatRoomId) {
+  Stream<List<MessageEntity>> getMessages(MessageEntity message) {
     try {
-      return _chatRemoteDataSource.getMessage(chatRoomId).map((result) => result
-          .map((model) => Chat(
-                chatRoom: model.chatRoom,
-                content: model.content,
-                senderId: model.senderId,
-                receiverId: model.receiverId,
-                timestamp: model.timestamp,
-              ))
-          .toList());
+      return _chatDataSource.getMessages(message);
     } catch (e) {
-      throw Exception('Terjadi Kesalahan implementasi get message $e');
+      throw Exception('terjadi kesalahan $e');
     }
   }
 
   @override
-  Future<void> sendMessage(Chat chat) async {
+  Stream<List<ChatEntity>> getMyChat(ChatEntity chat) {
     try {
-      final chatModel = ChatModel(
-        chatRoom: chat.chatRoom,
-        content: chat.content,
-        senderId: chat.senderId,
-        receiverId: chat.receiverId,
-        timestamp: chat.timestamp,
-      );
-      await _chatRemoteDataSource.sendMessage(chatModel);
+      return _chatDataSource.getMyChat(chat);
     } catch (e) {
-      throw Exception('Terjadi Kesalahan Implementasi send message $e');
+      throw Exception(e);
+    }
+  }
+
+  @override
+  Future<void> seenMessageUpdate(MessageEntity message) async {
+    try {
+      return await _chatDataSource.seenMessageUpdate(message);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  @override
+  Future<void> sendMessage(ChatEntity chat, MessageEntity message) async {
+    try {
+      return await _chatDataSource.sendMessage(chat, message);
+    } catch (e) {
+      throw Exception(e);
     }
   }
 }
